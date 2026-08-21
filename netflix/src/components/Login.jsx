@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Header from './Header'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Validation } from '../utils/Validate'
 import { loginUser, registerUser } from '../api/authApi'
 import { addUser } from '../utils/userSlice'
@@ -17,6 +17,16 @@ const Login = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const user = useSelector((state) => state.user.user)
+  const token = useSelector((state) => state.user.token)
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem('access_token')
+    if (user || token || savedToken) {
+      navigate('/browse')
+    }
+  }, [user, token, navigate])
 
   const handleValidation = async () => {
     const email = emailRef.current?.value?.trim() ?? ''
@@ -60,7 +70,7 @@ const Login = () => {
         )
       }
 
-      navigate('/Browse')
+      navigate('/browse')
     } catch (error) {
       setValidationError(error.message || 'An error occurred during authentication.')
     } finally {

@@ -9,6 +9,10 @@ const Body = () => {
             element: <Login />
         },
         {
+            path: "/browse",
+            element: <Browse />
+        },
+        {
             path: "/Browse",
             element: <Browse />
         }

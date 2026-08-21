@@ -29,11 +29,20 @@ const userSlice = createSlice({
       state.user = action.payload.user
       state.token = action.payload.token
       state.isAuthenticated = true
+      if (action.payload.user) {
+        localStorage.setItem('user_info', JSON.stringify(action.payload.user))
+      }
+      if (action.payload.token) {
+        localStorage.setItem('access_token', action.payload.token)
+      }
     },
     removeUser(state) {
       state.user = null
       state.token = null
       state.isAuthenticated = false
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('refresh_token')
+      localStorage.removeItem('user_info')
     },
   },
 })
